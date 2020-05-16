@@ -1,0 +1,6 @@
+#*.txt
+*.fig
+*.png
+*.m~
+/UAVPaper/Holes/Pontos
+

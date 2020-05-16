@@ -1,0 +1,3 @@
+[submodule "IvensCP"]
+	path = IvensCP
+	url = git@github.com:Marcus-Davi/IvensCP.git
