@@ -33,7 +33,7 @@ figure
 hold on;
 grid on;
 
-range =[2 4 6 8];
+range =[9 10 11];
 
 legenda = cell(1,length(range));
 grafico = cell(1,length(range));
@@ -51,36 +51,42 @@ for i = range
         Nmax = 880;
     end
     grafico{i} = ensaio{i}(:,2)/Nmax;
-    xAxis      = linspace(0,1,length(ensaio{i}));
+    xAxis      = linspace(0,100,length(ensaio{i}));
 %     xAxis      = 1:length(ensaio{i}(:,1));
-    plot(xAxis,100*grafico{i});
+    plot(xAxis,100*grafico{i},'linewidth',1);
     j = j+1;
     Med(j,:) = [i mean(grafico{i})];
-    legenda{j} = ['Trial ' num2str(i)];
+    legenda{j} = ['Exp. ' num2str(i)];
 end
+title('Flight Data Analysis')
 legend(legenda)
 xlabel('Progress %')
+ylim([0 100]);
 ylabel('Detected Points [%]')
 grid on
+box on
 subplot(2,1,2)
 hold on
+
 for i=range
     roll = data{i}(:,2);
     pitch= data{i}(:,3);
     yaw = data{i}(:,4);
     t = length(roll);
-    pct = linspace(0,1,t);
+    pct = linspace(0,100,t);
 %     plot(pct,roll)
 
-    plot(pct,pitch*360/2/pi)
+    plot(pct,pitch*360/2/pi,'linewidth',1)
 %     plot(pct,yaw)
 
 end
 
 % h = gcf;
 % h.Children.YLim = [0 1];
+
 legend(legenda)
-ylabel('Pitch [rad]')
+ylabel('Pitch [degree°]')
 xlabel('Progress %')
 grid on
 box on
+set(gcf, 'Position',  [300, 300, 1000, 500])

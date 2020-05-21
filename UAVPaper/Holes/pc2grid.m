@@ -1,7 +1,7 @@
 clear; close all;clc
 tic
 % xyz = load('pilha_densa.txt');
-filename = 'Pontos/exp11.asc'; %AQUI VC SELECIONA A NUVEM J� SEGMENTADA
+filename = 'Pontos/exp10.asc'; %AQUI VC SELECIONA A NUVEM J� SEGMENTADA
 xyz = load(filename); 
 % xyz = xyz(:,1:3);
 xy = xyz(:,1:2);
@@ -11,12 +11,17 @@ xy = xyz(:,1:2);
 x_c = (max(xy(:,1)) + min(xy(:,1)) )/2;
 y_c = (max(xy(:,2)) + min(xy(:,2)) )/2;
 
-% % FUNCAO UTILITÁRIA
+plotcloud(xy)
+return
+
+% FUNCAO UTILITÁRIA
 %  [xy_rot,angle] = h_align(xy); %Alinha com horizontal
-%  plotcloud(xy_rot,'blue')
+%  plotcloud(xy)
 %  hold on
-%  plotcloud(xy,'red')
+%  plotcloud(xy_rot)
+%  legend('Before Alignment','After Alignment');
 %  angle
+%  title('Alignment Experiment')
 %  return
 
 % angle
