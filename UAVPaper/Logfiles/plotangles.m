@@ -1,16 +1,16 @@
 clear;close all;clc
 
-data{1} = load('angles_1574701005.txt');
-data{2} = load('angles_1574701406.txt');
-data{3} = load('angles_1574702109.txt');
-data{4} = load('angles_1574702573.txt');
-data{5} = load('angles_1574703043.txt');
-data{6} = load('angles_1574703390.txt');
-data{7} = load('angles_1574703964.txt');
-data{8} = load('angles_1574704717.txt');
-data{9} = load('angles_1574705224.txt');
-data{10} = load('angles_1574700877.txt');
-data{11} = load('angles_1574701160.txt');
+data{1} = load('angles1.txt');
+data{2} = load('angles2.txt');
+data{3} = load('angles3.txt');
+data{4} = load('angles4.txt');
+data{5} = load('angles5.txt');
+data{6} = load('angles6.txt');
+data{7} = load('angles7.txt');
+data{8} = load('angles8.txt');
+data{9} = load('angles9.txt');
+data{10} = load('angles10.txt');
+data{11} = load('angles11.txt');
 n = 11;
 figure
 hold on

@@ -1,7 +1,7 @@
 clear; close all;clc
 tic
 % xyz = load('pilha_densa.txt');
-filename = 'Pontos/exp10.asc'; %AQUI VC SELECIONA A NUVEM J� SEGMENTADA
+filename = 'Pontos/exp11.asc'; %AQUI VC SELECIONA A NUVEM J� SEGMENTADA
 xyz = load(filename); 
 % xyz = xyz(:,1:3);
 xy = xyz(:,1:2);
@@ -11,21 +11,28 @@ xy = xyz(:,1:2);
 x_c = (max(xy(:,1)) + min(xy(:,1)) )/2;
 y_c = (max(xy(:,2)) + min(xy(:,2)) )/2;
 
-plotcloud(xy)
-return
+% plotcloud(xy)
+% return
 
 % FUNCAO UTILITÁRIA
+% tic
 %  [xy_rot,angle] = h_align(xy); %Alinha com horizontal
+%  toc
+%  angle
+%  return
 %  plotcloud(xy)
 %  hold on
 %  plotcloud(xy_rot)
 %  legend('Before Alignment','After Alignment');
 %  angle
 %  title('Alignment Experiment')
+% set(1,'Position',[500 500 803 610])
+% ylim([-150 0])
+% box on
 %  return
 
 % angle
- angle = -0.1929;% 0.188 ALINHADO
+ angle = -0.1933;% 0.188 ALINHADO
 R = [cos(angle) -sin(angle);sin(angle) cos(angle)]; %CW
 xy_rotated = (R*(xy' - [x_c;y_c]) + [x_c;y_c])'; %em torno do centro da pilha
 
@@ -56,7 +63,7 @@ xy_real = xy_rotated - [map.tfx-2 map.tfy-2]; %-2 ?
 
 
  %Essa res não pode ser menor que a resolução do lidar.
-RES = [0.5];
+RES = 0.5;
 total_res = length(RES);
 for j=1:total_res
 res = RES(j) %m

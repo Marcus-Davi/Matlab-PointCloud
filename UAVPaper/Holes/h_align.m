@@ -7,9 +7,11 @@ yc = (max(xy(:,2)) + min(xy(:,2)) )/2;
 n = length(xy);
 
 % e > 0 -> giro horário
-rate = 0.001;
+rate = 0.005;
 angle = 0;
-for it=1:100
+tolerance = 0.0001;
+e = 100;
+while abs(e) > tolerance
 R = [cos(angle) -sin(angle);sin(angle) cos(angle)]; %CW
 xy_rotated = (R*(xy' - [xc;yc]) + [xc;yc])'; %em torno do centro da pilha
 xleft = (xy(:,1)<xc);
@@ -21,11 +23,12 @@ e = (sum(eleft) + sum(eright))/n;
 angle = angle - rate*e;
 
 % DEBUG
-% plot(xy(:,1),xy(:,2),'.r')
-% hold on
-% plot(xy_rotated(:,1),xy_rotated(:,2),'.b')
-% hold off
-% drawnow
+plotcloud(xy);
+hold on
+plotcloud(xy_rotated);
+hold off
+grid on
+drawnow
 
 end
 
