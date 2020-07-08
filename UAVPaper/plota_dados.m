@@ -1,30 +1,30 @@
 clear;close all;clc
 
 %angulos
-data{1} = load('Angles/angles_1574701005.txt');
-data{2} = load('Angles/angles_1574701406.txt');
-data{3} = load('Angles/angles_1574702109.txt');
-data{4} = load('Angles/angles_1574702573.txt');
-data{5} = load('Angles/angles_1574703043.txt');
-data{6} = load('Angles/angles_1574703390.txt');
-data{7} = load('Angles/angles_1574703964.txt');
-data{8} = load('Angles/angles_1574704717.txt');
-data{9} = load('Angles/angles_1574705224.txt');
-data{10} = load('Angles/angles_1574700877.txt');
-data{11} = load('Angles/angles_1574701160.txt');
+data{1} = load('Logfiles/angles1.txt');
+data{2} = load('Logfiles/angles2.txt');
+data{3} = load('Logfiles/angles3.txt');
+data{4} = load('Logfiles/angles4.txt');
+data{5} = load('Logfiles/angles5.txt');
+data{6} = load('Logfiles/angles6.txt');
+data{7} = load('Logfiles/angles7.txt');
+data{8} = load('Logfiles/angles8.txt');
+data{9} = load('Logfiles/angles9.txt');
+data{10} = load('Logfiles/angles10.txt');
+data{11} = load('Logfiles/angles11.txt');
 
 
-ensaio{01} = load('NPontos/N_pontos_1574701005.txt');
-ensaio{02} = load('NPontos/N_pontos_1574701406.txt');
-ensaio{03} = load('NPontos/N_pontos_1574702109.txt');
-ensaio{04} = load('NPontos/N_pontos_1574702573.txt');
-ensaio{05} = load('NPontos/N_pontos_1574703043.txt');
-ensaio{06} = load('NPontos/N_pontos_1574703390.txt');
-ensaio{07} = load('NPontos/N_pontos_1574703964.txt');
-ensaio{08} = load('NPontos/N_pontos_1574704717.txt');
-ensaio{09} = load('NPontos/N_pontos_1574705224.txt');
-ensaio{10} = load('NPontos/N_pontos_1574700877.txt');
-ensaio{11} = load('NPontos/N_pontos_1574701160.txt');
+ensaio{01} = load('Logfiles/npoints1.txt');
+ensaio{02} = load('Logfiles/npoints2.txt');
+ensaio{03} = load('Logfiles/npoints3.txt');
+ensaio{04} = load('Logfiles/npoints4.txt');
+ensaio{05} = load('Logfiles/npoints5.txt');
+ensaio{06} = load('Logfiles/npoints6.txt');
+ensaio{07} = load('Logfiles/npoints7.txt');
+ensaio{08} = load('Logfiles/npoints8.txt');
+ensaio{09} = load('Logfiles/npoints9.txt');
+ensaio{10} = load('Logfiles/npoints10.txt');
+ensaio{11} = load('Logfiles/npoints11.txt');
 
 
 N          = length(ensaio)                 ;

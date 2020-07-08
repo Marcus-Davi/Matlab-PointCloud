@@ -1,4 +1,6 @@
 % Alinha nuvem de pontos com a horizontal
+% Algoritmo não é perfeito. buracos atrapalham um pouco
+
 function [xy_rotated,angle] = h_align(xy)
 xc = (max(xy(:,1)) + min(xy(:,1)) )/2;
 yc = (max(xy(:,2)) + min(xy(:,2)) )/2;
@@ -22,13 +24,13 @@ eright = (xy_rotated(xright,2) - yc);
 e = (sum(eleft) + sum(eright))/n;
 angle = angle - rate*e;
 
-% DEBUG
-plotcloud(xy);
-hold on
-plotcloud(xy_rotated);
-hold off
-grid on
-drawnow
+% DEBUG Comente aqui para desativar animação
+% plotcloud(xy);
+% hold on
+% plotcloud(xy_rotated);
+% hold off
+% grid on
+% drawnow
 
 end
 

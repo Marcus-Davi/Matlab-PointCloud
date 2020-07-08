@@ -1,4 +1,5 @@
-% Select points inside rectangle (efficient)
+% Select points inside rectangle (efficient) (mais efieicente que do
+% matlab)
 function xyzf = findPointsInRoi(xyz,roi)
   
   xi = xyz(:,1) > roi(1) & xyz(:,1) < roi(2);

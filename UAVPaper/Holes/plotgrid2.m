@@ -1,4 +1,4 @@
-%plota grid
+% Plota Grelha de Gráfico
 
 function y = plotgrid2(M)
 [rows,cols] = size(M); %line, col

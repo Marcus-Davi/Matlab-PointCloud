@@ -1,3 +1,4 @@
+% Plota matrix de pontos 2D 
 function plotmatrix(A)
 % axis ij -> aqui inverte a mostra
   [r,c] = find(A>0); %A > 0
