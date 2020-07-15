@@ -80,7 +80,7 @@ for i=1:total_msgs
       H = zeros(3);
       dtr = zeros(3,1);
       iterations = 5;
-      estimate = world_pose;4
+      estimate = world_pose;
       for it=1:iterations
          
           for j=1:n

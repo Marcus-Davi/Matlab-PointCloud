@@ -1,39 +1,40 @@
 clear;close all;clc
 
 %angulos
-data{1} = load('Logfiles/angles1.txt');
-data{2} = load('Logfiles/angles2.txt');
-data{3} = load('Logfiles/angles3.txt');
-data{4} = load('Logfiles/angles4.txt');
-data{5} = load('Logfiles/angles5.txt');
-data{6} = load('Logfiles/angles6.txt');
-data{7} = load('Logfiles/angles7.txt');
-data{8} = load('Logfiles/angles8.txt');
-data{9} = load('Logfiles/angles9.txt');
-data{10} = load('Logfiles/angles10.txt');
-data{11} = load('Logfiles/angles11.txt');
+angulo{1} = load('Logfiles/angles1.txt');
+angulo{2} = load('Logfiles/angles2.txt');
+angulo{3} = load('Logfiles/angles3.txt');
+angulo{4} = load('Logfiles/angles4.txt');
+angulo{5} = load('Logfiles/angles5.txt');
+angulo{6} = load('Logfiles/angles6.txt');
+angulo{7} = load('Logfiles/angles7.txt');
+angulo{8} = load('Logfiles/angles8.txt');
+angulo{9} = load('Logfiles/angles9.txt');
+angulo{10} = load('Logfiles/angles10.txt');
+angulo{11} = load('Logfiles/angles11.txt');
 
 
-ensaio{01} = load('Logfiles/npoints1.txt');
-ensaio{02} = load('Logfiles/npoints2.txt');
-ensaio{03} = load('Logfiles/npoints3.txt');
-ensaio{04} = load('Logfiles/npoints4.txt');
-ensaio{05} = load('Logfiles/npoints5.txt');
-ensaio{06} = load('Logfiles/npoints6.txt');
-ensaio{07} = load('Logfiles/npoints7.txt');
-ensaio{08} = load('Logfiles/npoints8.txt');
-ensaio{09} = load('Logfiles/npoints9.txt');
-ensaio{10} = load('Logfiles/npoints10.txt');
-ensaio{11} = load('Logfiles/npoints11.txt');
+npontos{01} = load('Logfiles/npoints1.txt');
+npontos{02} = load('Logfiles/npoints2.txt');
+npontos{03} = load('Logfiles/npoints3.txt');
+npontos{04} = load('Logfiles/npoints4.txt');
+npontos{05} = load('Logfiles/npoints5.txt');
+npontos{06} = load('Logfiles/npoints6.txt');
+npontos{07} = load('Logfiles/npoints7.txt');
+npontos{08} = load('Logfiles/npoints8.txt');
+npontos{09} = load('Logfiles/npoints9.txt');
+npontos{10} = load('Logfiles/npoints10.txt');
+npontos{11} = load('Logfiles/npoints11.txt');
 
 
-N          = length(ensaio)                 ;
+N          = length(npontos)                 ;
 
 figure
 hold on;
 grid on;
 
-range =[9 10 11];
+% Range dos plots, 1 a 11
+range =[1:11];
 
 legenda = cell(1,length(range));
 grafico = cell(1,length(range));
@@ -50,8 +51,8 @@ for i = range
     else
         Nmax = 880;
     end
-    grafico{i} = ensaio{i}(:,2)/Nmax;
-    xAxis      = linspace(0,100,length(ensaio{i}));
+    grafico{i} = npontos{i}(:,2)/Nmax;
+    xAxis      = linspace(0,100,length(npontos{i}));
 %     xAxis      = 1:length(ensaio{i}(:,1));
     plot(xAxis,100*grafico{i},'linewidth',1);
     j = j+1;
@@ -69,9 +70,9 @@ subplot(2,1,2)
 hold on
 
 for i=range
-    roll = data{i}(:,2);
-    pitch= data{i}(:,3);
-    yaw = data{i}(:,4);
+    roll = angulo{i}(:,2);
+    pitch= angulo{i}(:,3);
+    yaw = angulo{i}(:,4);
     t = length(roll);
     pct = linspace(0,100,t);
 %     plot(pct,roll)
@@ -90,3 +91,46 @@ xlabel('Progress %')
 grid on
 box on
 set(gcf, 'Position',  [300, 300, 1000, 500])
+% return
+
+
+%% Data processing
+% close all
+% Correlação
+CORRS = zeros(11,3);
+for ensaio_n = 1:11
+an = angulo{ensaio_n}(:,2:4);
+pon = npontos{ensaio_n}(:,2);
+data = [abs(an) pon];
+corr_matrix = corrcoef(data);
+CORRS(ensaio_n,:) = corr_matrix(4,1:3);
+end
+%% 
+% Correlação sem Buracos
+% trechos com água = [10%-20%] e [80%-90%] -> [1-2 , 8-9]
+trechos_agua_pct = [10 23;82 92];
+% trechos_agua_pct = [];
+CORRS_NOHOLES = zeros(11,3);
+for ensaio_n = 1:11
+n_data = length(angulo{ensaio_n});
+% calculo dos indices dos trechos
+trechos_agua = fix(trechos_agua_pct*n_data*0.01);
+trechos = [];
+for n_trechos = 1:size(trechos_agua,2)
+    trechos = [trechos trechos_agua(n_trechos,1):trechos_agua(n_trechos,2)];
+end
+
+an = angulo{ensaio_n}(:,2:4);
+pon = npontos{ensaio_n}(:,2);
+
+an(trechos,:) = [];
+pon(trechos,:) = [];
+
+data = [abs(an) pon];
+corr_matrix = corrcoef(data);
+CORRS_NOHOLES(ensaio_n,:) = corr_matrix(4,1:3);
+end
+CORRS
+CORRS_NOHOLES
+% livro 1235 págs
+% qts algarismos '1' na numeração das páginas
