@@ -39,8 +39,8 @@ T_ = [0 0]';
 tic
 for k=1:match_iterations
           k
-        % Find correlations procura KD(P0) por pontos proximos de CADA ponto em P1
-        [match ~] = knnsearch(KD,P1_transformed');
+        % Find correlations - procura KD(P0) por pontos proximos de CADA ponto em P1
+        [match,~] = knnsearch(KD,P1_transformed'); %o match aqui são os indices de P1_Transformed(argumento)
 %           match = brutesearch(P0,P1_transformed);
         
         
