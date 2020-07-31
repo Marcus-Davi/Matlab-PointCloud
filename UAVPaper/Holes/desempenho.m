@@ -5,24 +5,25 @@
 
 %%
 clear;close all;clc
-TotalDist = 2*463 + 30; %tirado do earth
-ID = 0.01.*[84.36 87.13 83.31 90.13 89.48 90.22 85.97 88.28 87.99 90.15 88.89]';
-%Durs = [197 215 187 215 330 335 215 215 330 333 254]';
-Vels = [10 8 10 8 4 4 8 8 4 4 6]';
-Durs = TotalDist./Vels;
-H = [30 30 30 25 30 25 30 25 30 25 27.5]';
-Freqs = [12.5 12.5 50 12.5 12.5 12.5 50 50 50 50 25]';
+ID = 0.01*[89.07 93.84 93.05 94.39 88.71 92.53 89.60 93.61 92.21 86.63 84.62]';
+Vels = [8 8 4 4 8 8 4 4 6 10 10]';
+H = [30 25 30 25 30 25 30 25 27.5 30 30]';
+Freqs = [12.5 12.5 12.5 12.5 50 50 50 50 25 12.5 50]';
 
 Vels_i = 1./Vels;
 H_i = 1./H;
 Freqs_i = 1./Freqs;
-Durs_i = 1./Durs;
+
+Corr = [ID Vels Vels_i H H_i Freqs];
+cov(Corr)
+corrcoef(Corr)
+return
 
 n = length(ID);
 Y = ID;
 % X = Durs';
-X_i =  [ones(n,1) Vels_i H_i Freqs];
-X_normal = [ones(n,1) Vels.*Vels H Freqs];
+X_i =  [ones(n,1) Vels_i H_i Freqs_i];
+X_normal = [ones(n,1) Vels Vels_i H H_i Freqs];
 
 X = X_normal;
 
@@ -31,12 +32,12 @@ Beta = inv((X'*X))*X'*Y; %Mínimos Quadrados
 disp('Erro médio quadrático')
 Err = Y - X*Beta
 Errsqr = Err'*Err
-
-
+Beta
 
 plot(Y)
 hold on
 plot(X*Beta)
+grid on
 legend('Output','Model Estimation')
 return
 %% Try 100

@@ -1,7 +1,7 @@
 % Point Cloud to Grid
 clear; close all;clc
 tic
-filename = 'Pontos/exp7.asc'; % Seleciona Nuvem, entre [1-11] (Ja segmentada)
+filename = 'Pontos/exp11.asc'; % Seleciona Nuvem, entre [1-11] (Ja segmentada)
 xyz = load(filename); 
 xy = xyz(:,1:2); %Seleciona apenas 2D
 

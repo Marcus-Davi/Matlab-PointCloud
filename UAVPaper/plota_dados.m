@@ -106,9 +106,11 @@ corr_matrix = corrcoef(data);
 CORRS(ensaio_n,:) = corr_matrix(4,1:3);
 end
 %% 
+figure
+hold on
 % Correlação sem Buracos
 % trechos com água = [10%-20%] e [80%-90%] -> [1-2 , 8-9]
-trechos_agua_pct = [10 23;82 92];
+trechos_agua_pct = [12 23;82 92];
 % trechos_agua_pct = [];
 CORRS_NOHOLES = zeros(11,3);
 for ensaio_n = 1:11
@@ -125,6 +127,7 @@ pon = npontos{ensaio_n}(:,2);
 
 an(trechos,:) = [];
 pon(trechos,:) = [];
+% plot(pon) % so pra ter ideia
 
 data = [abs(an) pon];
 corr_matrix = corrcoef(data);
@@ -132,5 +135,7 @@ CORRS_NOHOLES(ensaio_n,:) = corr_matrix(4,1:3);
 end
 CORRS
 CORRS_NOHOLES
+
+
 % livro 1235 págs
 % qts algarismos '1' na numeração das páginas
