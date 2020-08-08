@@ -1,7 +1,7 @@
 % Point Cloud to Grid
 clear; close all;clc
 tic
-filename = 'Pontos/exp11.asc'; % Seleciona Nuvem, entre [1-11] (Ja segmentada)
+filename = 'Pontos/exp4.asc'; % Seleciona Nuvem, entre [1-11] (Ja segmentada)
 xyz = load(filename); 
 xy = xyz(:,1:2); %Seleciona apenas 2D
 
@@ -12,22 +12,23 @@ x_c = (max(xy(:,1)) + min(xy(:,1)) )/2;
 y_c = (max(xy(:,2)) + min(xy(:,2)) )/2;
 
 %% Decomente este bloco para uso de ângulo fixo
-% tic
-% [xy_rot,angle] = h_align(xy); %Alinha com horizontal
-% toc
-% %  return
-% 
-% % Gera figura de antes/depois
-%  plotcloud(xy)
-%  hold on
-%  plotcloud(xy_rot)
-%  legend('Before Alignment','After Alignment');
-%  title('Alignment Experiment')
-% set(1,'Position',[500 500 803 610])
-% ylim([-150 0])
-% box on
-% angle
+tic
+[xy_rot,angle] = h_align(xy); %Alinha com horizontal
+toc
 %  return
+
+% Gera figura de antes/depois
+ f1 = plotcloud(xy);
+ axis equal
+ f2 = plotcloud(xy_rot,[215/255 82/255 0]);
+ axis equal
+ 
+ set(f1,'Position',[640 130 950 730])
+ set(f2,'Position',[640 130 950 730])
+
+box on
+angle
+ return
 
 
 %% Usa o ângulo fixo

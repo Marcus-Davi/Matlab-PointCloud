@@ -1,13 +1,15 @@
 clear;close all;clc
-% cloud_raw = load('Pilha1_Raw.asc');
-cloud_raw = load('Cilindrao2.asc');
+
+pc = pcread('caixa.pcd')
+% cloud_raw = load('caixa.pcd');
+% cloud_raw = load('Cilindrao2.asc');
 % cloud_raw = load('Caixa2.asc');
 % cloud_raw = load('Pilha33_Raw.asc'); %MAIOR
 % cloud_raw1 = load('Pilha32_Raw.asc'); %SEGUNDA MAIOR
 % cloud_raw2 = load('Pilha31_Raw.asc'); %MENOR
 
 
-cloud = cloud_raw(:,1:3); %pega s pontos
+cloud = double(pc.Location); %pega s pontos
 
 pcshow(cloud);
 figure
@@ -37,7 +39,7 @@ for density=densities
 Cloud_floored = makeFloor(cloud,density);
 % Varios Volumes
 % alphas = [0.05 0.1 0.15 0.3 0.5 1 10];
-alphas = [0.5];
+alphas = [100];
 V = zeros(length(alphas),1);
 i = 1;
 for alpha=alphas

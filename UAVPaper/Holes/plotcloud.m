@@ -1,7 +1,8 @@
 % xy
 % z
-function  plotcloud(xy,color)
+function  fig = plotcloud(xy,color)
 %k
+fig = figure
 if(nargin == 1)
 plot(xy(:,1),xy(:,2),'.','markersize',5) %Alinhada
 else

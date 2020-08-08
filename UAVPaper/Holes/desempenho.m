@@ -14,7 +14,7 @@ Vels_i = 1./Vels;
 H_i = 1./H;
 Freqs_i = 1./Freqs;
 
-Corr = [ID Vels Vels_i H H_i Freqs];
+Corr = [ID Vels H Freqs];
 cov(Corr)
 corrcoef(Corr)
 return
