@@ -1,3 +1,6 @@
 [submodule "IvensCP"]
 	path = IvensCP
 	url = git@github.com:Marcus-Davi/IvensCP.git
+[submodule "Drone"]
+	path = Drone
+	url = git@github.com:Marcus-Davi/drone-register.git

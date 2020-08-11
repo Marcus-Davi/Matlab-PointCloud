@@ -11,12 +11,12 @@ pc = pcread('caixa.pcd')
 
 cloud = double(pc.Location); %pega s pontos
 
-pcshow(cloud);
-figure
-% pcshow(cloud_raw1(:,1:3)); 
-% pcshow(cloud_raw2(:,1:3)); 
-xlabel('X');
-ylabel('Y');
+% pcshow(cloud);
+% figure
+% % pcshow(cloud_raw1(:,1:3)); 
+% % pcshow(cloud_raw2(:,1:3)); 
+% xlabel('X');
+% ylabel('Y');
 % return
 % Pega 4 cantos do PC;
 %% HARD MODE -> Traça um plano entre os 4 (ou 3 )
@@ -34,12 +34,12 @@ ylabel('Y');
 %% SMART MODE -> Projeção de toda a nuvem sobre plano (x,y)! 
 % ai eh top
 %%
-densities = [0.2];
+densities = [0.5];
 for density=densities
 Cloud_floored = makeFloor(cloud,density);
 % Varios Volumes
 % alphas = [0.05 0.1 0.15 0.3 0.5 1 10];
-alphas = [100];
+alphas = [0.1];
 V = zeros(length(alphas),1);
 i = 1;
 for alpha=alphas
@@ -47,6 +47,13 @@ for alpha=alphas
     V(i) = volume(shape);
     i = i+1;
 end
+
+%% Save Floored
+pc_floored = pointCloud(Cloud_floored);
+pcwrite(pc_floored,'caixa_floor.pcd');
+
+%% Plots
+close all
 
 plot(alphas,V)
 grid on
