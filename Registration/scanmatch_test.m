@@ -1,72 +1,86 @@
 clear;close all;clc
 %% Load Points
-p0 = pcread('p0.pcd');
-p1 = pcread('p1.pcd');
-% pcshow(p0);
-% hold on
-% pcshow(p1)
-X0 = p0.Location(:,1);
-Y0 = p0.Location(:,2);
 
-X1 = p1.Location(:,1);
-Y1 = p1.Location(:,2);
+load('lms_dataset.mat')
+
+% return
 
 %% Filtros
 
 
-P0 = [nonzeros(X0)'; nonzeros(Y0)'];
-P1 = [nonzeros(X1)'; nonzeros(Y1)'];
+source = SCANS{1};
+target = SCANS{100};
 
-n = length(P0);
-n1 = length(P1);
 
-%% a Few plots
+% filter zeros
+
+source = source(source(:,1) ~= 0,:);
+target = target(target(:,1) ~= 0,:);
+
+source = source(:,1:2);
+target = target(:,1:2);
+
+n_source = length(source);
+n_target = length(target);
+
+
 %% Plots
-plot(P0(1,:),P0(2,:),'b.') % Original
+plot(source(:,1),source(:,2),'b.') % Original
 hold on
-plot(P1(1,:),P1(2,:),'r.') % Final
+plot(target(:,1),target(:,2),'r.') % Final
 drawnow
 %% myICP
 match_iterations = 30;
-% Closest point (ñ mt eficiente?)
 
-%% KD TREE for closest. P0 -> Fixed Cloud / MAP ; P1 -> Moving cloud / Last SCAN
-P1_transformed = P1;
-KD = KDTreeSearcher(P0','BucketSize',10);
+% Closest point (ñ mt eficiente?)
+%% KD TREE for closest. P0 -> Source Cloud / MAP ; P1 -> Target cloud / Last SCAN
+% P1_transformed = target;
+
+source_transformed = source;
+% KD = KDTreeSearcher(source','BucketSize',10);
 r = 1; %distance
 R_ = eye(2);
 T_ = [0 0]';
 tic
 for k=1:match_iterations
-          k
-        % Find correlations - procura KD(P0) por pontos proximos de CADA ponto em P1
-        [match,~] = knnsearch(KD,P1_transformed'); %o match aqui são os indices de P1_Transformed(argumento)
-%           match = brutesearch(P0,P1_transformed);
-        
-        
-        weights = ones(1,length(match));
-        
-
-        p1_idx = true(1, n1);
-        p0_idx = match;
-        
-        P0_corr = P0(:,p0_idx);
-        P1_corr = P1_transformed(:,p1_idx);
-        
-        err_ = (P0_corr - P1_corr)';
-        err = sum(err_);
-        norm(err)
-%         norm(err_)
+    k
+      
+    % procura correspondencias em 'target' para cada ponto da 'source'
+%     [match,~] = knnsearch(target,source_transformed,'K',1); %
+    [match,~] = knnsearch(target,source_transformed,'K',2); %
     
-    [R,T] = my_scanmatch(P0_corr,P1_corr,weights,1);
-%     [R,T] = eq_point(P0_corr,P1_corr,weights(p1_idx));
+    
+    
+    %           match = brutesearch(P0,P1_transformed);
+    
+    
+    weights = ones(1,length(match));
+    
+    
+    
+    source_idx = true(1, n_source);
+    target_idx = match;
+    
+    source_corr = source_transformed(source_idx,:);
+    target_corr = target(target_idx,:);
+    
+%             err_ = (source_corr - target_corr)';
+%             err = sum(err_);
+%             norm(err)
+%             norm(err_)
+    
+    [R,T] = my_scanmatch(source_corr',target_corr',weights,1);
 
+%         [R,T] = eq_point(source_corr',target_corr',weights(source_idx));
+%         R = R';
+%         T = -T;
+    
     R_ = R*R_; %totals
     T_ = R*T_ + T; %totals
-    P1_transformed = R * P1_transformed + T;
+    source_transformed = (R * source_transformed' + T)';
     
     
-    plot(P1_transformed(1,:),P1_transformed(2,:),'g.')
+    plot(source_transformed(:,1),source_transformed(:,2),'g.')
     drawnow
 end
 toc

@@ -1,9 +1,10 @@
 %entra com as duas nuvem de pontos
-function [R_f,T_f] = my_scanmatch(P0,P1,weights_,n_it)
+function [R_f,T_f] = my_scanmatch(source,target,weights_,n_it)
 % weights = weights_ ./ sum(weights_);
-N = length(P0);
-P0_ = P0; 
-P1_ = P1;
+
+N = length(source);
+P0_ = source; 
+P1_ = target;
 x = zeros(3,1); % tx ty theta
 %% Gauss Newton MT BOM!!!
 %r(x) = R*Pi + T - Pi 
@@ -28,8 +29,8 @@ end
                 
 end
 
-    R_f = [cos(x(3)) -sin(x(3));sin(x(3)) cos(x(3))]';
-    T_f = -[x(1);x(2)];
+    R_f = [cos(x(3)) sin(x(3));-sin(x(3)) cos(x(3))]';
+    T_f = [x(1);x(2)];
 
 
 end
