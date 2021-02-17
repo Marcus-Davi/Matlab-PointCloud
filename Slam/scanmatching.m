@@ -5,7 +5,7 @@ load lidarScans.mat
 
 
 referenceScan = lidarScans(180);
-currentScan = lidarScans(202);
+currentScan = lidarScans(190);
 
 
 currScanCart = currentScan.Cartesian;

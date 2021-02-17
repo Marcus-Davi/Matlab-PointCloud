@@ -24,6 +24,7 @@ slamAlg.LoopClosureSearchRadius = 8;
 % [isScanAccepted, loopClosureInfo, optimizationInfo] = addScan(slamAlg, scans{1});
 
 for i=2:length(scans) %Start from 2
+
     [isScanAccepted, loopClosureInfo, optimizationInfo] = addScan(slamAlg, scans{i});
     if isScanAccepted
         figure(1)
@@ -41,7 +42,7 @@ for i=2:length(scans) %Start from 2
         hold on;
         show(slamAlg.PoseGraph);
         hold off;
-        firstTimeLCDetected = true;
+        
         drawnow
     end
 end
