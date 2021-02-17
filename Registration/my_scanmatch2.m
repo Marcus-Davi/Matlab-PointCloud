@@ -23,17 +23,17 @@ for k=1:n_it
         
         %point to point
         %     r = [r;(R*P0_(:,i)+ T - P1_(:,i))]; %esta função deve ser alterada pra levar em conta a indexação
-        %
+        
         %point to line
         
-          err_ = point2point(R*P0_(:,i)+ T,P1_(:,i))
-        err = -point2line(R*P0_(:,i)+ T, P1_(:,i), P2_(:,i))
-          
-            r = [r;err]; %esta função deve ser alterada pra levar em conta a indexação
- 
+        err_ = point2point(R*P0_(:,i)+ T,P1_(:,i));
+        err = -point2line(R*P0_(:,i)+ T, P1_(:,i), P2_(:,i));
+        
+        r = [r;err]; %esta função deve ser alterada pra levar em conta a indexação
+        
         
         jac = [jac ;(Jf(P0_(:,i),P1_(:,i),x))];
-
+        
     end
     increment = -inv(jac'*jac)*jac'*r;
     x = x + increment(:,1);
@@ -58,9 +58,11 @@ p2 = [l1(1) l1(2) 0]';
 
 
 line_pt = p1;
-line_dir = p2-p1;
+line_dir = (p2-p1)/norm(p2-p1);
 
-d = (line_pt - p0) - dot(dot(line_pt-p0,line_dir)*line_dir,line_dir);
+
+ 
+d = (line_pt - p0) - dot(dot(line_pt-p0,line_dir)*line_dir,line_dir); % point to point ??
 d2 = norm(cross(line_dir,line_pt-p0))^2/ norm(line_dir)^2;
 
 d = d(1:2);

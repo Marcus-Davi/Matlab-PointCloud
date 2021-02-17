@@ -58,21 +58,23 @@ r = 1; %distance
 R_ = eye(2);
 T_ = [0 0]';
 tic
+
+max_dists = 0.5;
 for k=1:match_iterations
     k
       
     % procura correspondencias em 'target' para cada ponto da 'source'
 %     [match,~] = knnsearch(target,source_transformed,'K',1); %
-    [match,~] = knnsearch(target,source_transformed,'K',2); %
+    [match,dists] = knnsearch(target,source_transformed,'K',2); %
     
+    dists_index = dists < max_dists;
     
+%     match = [match(dists_index(:,1)) match(dists_index(:,2))];
     
+
     %           match = brutesearch(P0,P1_transformed);
     
-    
-    weights = ones(1,length(match));
-    
-    
+    weights = ones(1,length(match));       
     
     source_idx = true(1, n_source);
     target_idx = match;
@@ -86,8 +88,8 @@ for k=1:match_iterations
 %             norm(err)
 %             norm(err_)
     
-%     [R,T] = my_scanmatch(source_corr',target_corr',weights,1);
-    [R,T] = my_scanmatch2(source_corr',target_corr',target_corr2',weights,1);
+    [R,T] = my_scanmatch(source_corr',target_corr',weights,1);
+%     [R,T] = my_scanmatch2(source_corr',target_corr',target_corr2',weights,1);
 % % 
 %         [R,T] = eq_point(source_corr',target_corr',weights(source_idx));
 %         R = R';
