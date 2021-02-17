@@ -9,7 +9,7 @@ load('lms_dataset.mat')
 
 
 source = SCANS{1};
-target = SCANS{100};
+target = SCANS{150};
 
 
 % filter zeros
@@ -17,11 +17,22 @@ target = SCANS{100};
 source = source(source(:,1) ~= 0,:);
 target = target(target(:,1) ~= 0,:);
 
+% remove z
 source = source(:,1:2);
 target = target(:,1:2);
 
-n_source = length(source);
-n_target = length(target);
+
+
+
+%% Feature extraction
+source_ = extractEdges(source,4);
+
+% plot(source(:,1),source(:,2),'b.') % Original
+% hold on
+% plot(source_(:,1),source_(:,2),'r.') % Original
+% 
+% return
+
 
 
 %% Plots
@@ -36,7 +47,12 @@ match_iterations = 30;
 %% KD TREE for closest. P0 -> Source Cloud / MAP ; P1 -> Target cloud / Last SCAN
 % P1_transformed = target;
 
-source_transformed = source;
+source_transformed = source_;
+
+n_source = length(source_transformed);
+n_target = length(target);
+
+
 % KD = KDTreeSearcher(source','BucketSize',10);
 r = 1; %distance
 R_ = eye(2);
@@ -62,15 +78,17 @@ for k=1:match_iterations
     target_idx = match;
     
     source_corr = source_transformed(source_idx,:);
-    target_corr = target(target_idx,:);
+    target_corr = target(target_idx(:,1),:);
+    target_corr2 = target(target_idx(:,2),:);
     
 %             err_ = (source_corr - target_corr)';
 %             err = sum(err_);
 %             norm(err)
 %             norm(err_)
     
-    [R,T] = my_scanmatch(source_corr',target_corr',weights,1);
-
+%     [R,T] = my_scanmatch(source_corr',target_corr',weights,1);
+    [R,T] = my_scanmatch2(source_corr',target_corr',target_corr2',weights,1);
+% % 
 %         [R,T] = eq_point(source_corr',target_corr',weights(source_idx));
 %         R = R';
 %         T = -T;
@@ -82,8 +100,16 @@ for k=1:match_iterations
     
     plot(source_transformed(:,1),source_transformed(:,2),'g.')
     drawnow
+%     pause(0.1)
 end
 toc
+
+figure
+source_transformed_final = (R_ * source' + T_)';
+plot(source_transformed_final(:,1),source_transformed_final(:,2),'g.')
+hold on
+plot(target(:,1),target(:,2),'r.') % Final
+grid on
 
 function [R,T] = eq_point(q,p,weights)
 
