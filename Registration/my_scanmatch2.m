@@ -11,28 +11,35 @@ x = zeros(3,1); % tx ty theta
 %r(x) = R*Pi + T - Pi
 
 for k=1:n_it
-    
-    R = [cos(x(3)) -sin(x(3));sin(x(3)) cos(x(3))];
-    T = [x(1);x(2)];
+          
     r = [];
     jac = [];
     %     r = zeros(2*N,1);
     % jac = zeros(2*N,3);
     for i=1:N
-        %     r(2*i-1:2*i) = [(R*P0_(:,i)+ T - P1_(:,i))]; %esta função deve ser alterada pra levar em conta a indexação
-        
-        %point to point
-        %     r = [r;(R*P0_(:,i)+ T - P1_(:,i))]; %esta função deve ser alterada pra levar em conta a indexação
-        
         %point to line
         
-        err_ = point2point(R*P0_(:,i)+ T,P1_(:,i));
-        err = -point2line(R*P0_(:,i)+ T, P1_(:,i), P2_(:,i));
+        p_src = P0_(:,i);
+        p_tgt = P1_(:,i);
+        p_tgt2 = P2_(:,i);
         
-        r = [r;err]; %esta função deve ser alterada pra levar em conta a indexação
+        pts = [p_src p_tgt p_tgt2]; %generic
+
+           
+
+        err_ = point2line(x,pts);
+%         err_ = point2point(x,pts);
         
         
-        jac = [jac ;(Jf(P0_(:,i),P1_(:,i),x))];
+        
+        
+%         jac_ = numericalDiff(x,@point2point,pts);
+        jac_ = numericalDiff(x,@point2line,pts);
+     
+        
+        r = [r;err_];
+        
+        jac = [jac ;jac_]; % stack jacobians
         
     end
     increment = -inv(jac'*jac)*jac'*r;
@@ -46,45 +53,72 @@ T_f = [x(1);x(2)];
 
 end
 
-function d = point2point(pt0,pt1)
-d = pt0 - pt1;
 
+% Distance / Cost Function 
+function d = point2point(x,pts)
+pt0 = pts(:,1);
+pt1 = pts(:,2);
+
+
+
+R = [cos(x(3)) -sin(x(3));sin(x(3)) cos(x(3))];
+T = [x(1);x(2)];
+
+vec = R*pt0+T - pt1;
+% 
+% d = vec;
+d = norm(vec);
 end
 
-function d = point2line(pt, l0,l1)
-p0 = [pt(1) pt(2) 0]';
-p1 = [l0(1) l0(2) 0]';
-p2 = [l1(1) l1(2) 0]';
 
+function d = point2line(x,pts)
+% p0 = [pt(1) pt(2) 0]';
+pt0 =[pts(1,1) pts(2,1)]';
+p1 = [pts(1,2) pts(2,2) 0]';
+p2 = [pts(1,3) pts(2,3) 0]';
+
+% Compose transforms
+R = [cos(x(3)) -sin(x(3));sin(x(3)) cos(x(3))];
+T = [x(1);x(2)];
+
+p0_tf = R*pt0+T;
+p0_tf(3) = 0;
 
 line_pt = p1;
 line_dir = (p2-p1)/norm(p2-p1);
-
-
  
-d = (line_pt - p0) - dot(dot(line_pt-p0,line_dir)*line_dir,line_dir); % point to point ??
-d2 = norm(cross(line_dir,line_pt-p0))^2/ norm(line_dir)^2;
+% d = (line_pt - p0_tf) - dot(dot(line_pt-p0_tf,line_dir)*line_dir,line_dir); % point to point ??
+d = norm(cross(line_dir,line_pt-p0_tf))/ norm(line_dir);
 
-d = d(1:2);
-
-
-
-
-
-% versor
-
+% d = d2(3);
+% 
+% d = d(1:2);
 
 
 end
 
 
-%% Functions
-function y = Jf(p0,p1,x)
-tx = x(1);
-ty = x(2);
-theta = x(3);
-x0 = p0(1);y0=p0(2);
-x1 = p1(1);y1=p1(2);
+%% Use numerical Jacobian (faster ? more practical ? reliable ? )
+function jac = numericalDiff (x, f_handle,f_consts)
 
-y = [1 0 -sin(theta)*x0-cos(theta)*y0;0 1 cos(theta)*x0-sin(theta)*y0];
+y_nom = f_handle(x,f_consts);
+n_rows = length(y_nom);
+n_cols = length(x);
+jac = zeros(n_rows,n_cols);
+
+
+increment = 1e-4;
+for i=1:length(x)
+    x_inc = x;
+    x_inc(i) = x_inc(i) + increment;
+    
+    y_inc = f_handle(x_inc,f_consts);
+    
+    jac(:,i) = (y_inc - y_nom) / increment;
+    
 end
+
+
+end
+
+
