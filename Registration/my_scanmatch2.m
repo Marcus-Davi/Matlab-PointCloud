@@ -2,7 +2,7 @@
 function [R_f,T_f] = my_scanmatch2(source,target,target2,weights_,n_it)
 % weights = weights_ ./ sum(weights_);
 
-N = length(source);
+N = size(source,2);
 P0_ = source;
 P1_ = target;
 P2_ = target2;
@@ -29,9 +29,7 @@ for k=1:n_it
 
         err_ = point2line(x,pts);
 %         err_ = point2point(x,pts);
-        
-        
-        
+                
         
 %         jac_ = numericalDiff(x,@point2point,pts);
         jac_ = numericalDiff(x,@point2line,pts);
